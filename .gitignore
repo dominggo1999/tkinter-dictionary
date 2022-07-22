@@ -4,6 +4,7 @@ dist-ssr
 *.local
 build 
 venv
+*.mp3
 __pycache__/
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.

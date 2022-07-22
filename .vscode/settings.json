@@ -6,6 +6,7 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
+    "bin": false,
     "build": true,
     "venv": true,
   }

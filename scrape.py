@@ -23,10 +23,10 @@ async def load_url(url, json=False, audioBase64=False):
 
             if(audioBase64):
                 # Transform audio into base64
-                uri = str(base64.b64encode(r.content).decode("utf-8"))
-                content_type = r.headers['Content-Type']
-                data = "data:" + content_type + ";base64," + uri
-                return {"audioBase64": data}
+                # uri = str(base64.b64encode(r.content).decode("utf-8"))
+                # content_type = r.headers['Content-Type']
+                # data = "data:" + content_type + ";base64," + uri
+                return {"audioBase64": r.content}
 
             if(json):
                 return {"json": r.json()}
@@ -167,7 +167,7 @@ def indo_definitions(word):
     loop.close()
 
     if (not definitions):
-        return {}
+        return {"indonesia": []}
 
     filtered_definitions = [item for item in definitions if item["i"]]
 

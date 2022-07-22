@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec python index.py"
+    "start": "nodemon --exec python index.py",
+    "pack": ".\\venv\\Scripts\\pyinstaller build-windows.spec"
   },
   "keywords": [],
   "author": "",

@@ -1,12 +1,31 @@
 from tkinter import *
-from tkinter import messagebox
 from tkinter import ttk
 from scrape import *
+from gtts import gTTS
+import os
+from datetime import datetime
+from uuid import uuid4
+from pygame import mixer
+import glob
 
 
 window = Tk()
 window.title("Dictionary")
 window.geometry("400x300")
+
+# Audio player
+mixer.init()
+
+
+temp_dir = "temp_tts"
+# Create temporary folder for google tts
+is_exist = os.path.exists(temp_dir)
+if(not is_exist):
+    os.makedirs(temp_dir)
+else:
+    filelist = glob.glob(os.path.join(temp_dir, "*"))
+    for f in filelist:
+        os.remove(f)
 
 
 class dictionary():
@@ -31,11 +50,12 @@ class dictionary():
         self.search_bar.grid(row=0, column=0, sticky=W)
 
         # Audio
-        self.audio = ""
+        self.previous_audio_file = ""
 
         # Init components
         self.input_field()
         self.submit_button()
+        self.audio_button()
 
     def input_field(self):
         entry = Entry(self.search_bar, textvariable=self.word_sv)
@@ -82,7 +102,27 @@ class dictionary():
             except:
                 return
 
-        self.indo_list_wrapper.grid(row=1, column=0, sticky=W)
+        self.indo_list_wrapper.grid(row=2, column=0, sticky=W)
+
+    def audio_button(self):
+        audio_button = Button(
+            self.left_frame, text="Play Audio", command=self.play_audio)
+        audio_button.grid(row=1, column=0, sticky=W)
+
+    def play_audio(self):
+        if self.word and not mixer.music.get_busy():
+            # Remove previous audio
+            if(self.previous_audio_file):
+                mixer.music.unload()
+                os.remove(self.previous_audio_file)
+
+            # Enforce unique filename
+            filename = temp_dir + "/" "voice"+str(uuid4())+".mp3"
+            self.previous_audio_file = filename
+            tts = gTTS(self.word)
+            tts.save(filename)
+            mixer.music.load(filename)  # Load the mp3
+            mixer.music.play()  # Play it
 
     def clean_up_list(self, list):
         if(list):
